@@ -33,7 +33,12 @@ android {
         }
     }
 
+    lintOptions {
+//        disable 'InvalidPackage'
+        checkReleaseBuilds false
+        abortOnError false
 
+    }
 
     packagingOptions {
         exclude 'META-INF/rxjava.properties'

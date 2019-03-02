@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'
+
+apply plugin: 'com.novoda.bintray-release'//添加
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -30,6 +32,8 @@ android {
     lintOptions {
         disable 'InvalidPackage'
         checkReleaseBuilds false
+        abortOnError false
+
     }
 
     packagingOptions {
@@ -101,4 +105,15 @@ dependencies {
     compile 'org.nanohttpd:nanohttpd:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.android.support.constraint:constraint-layout:2.0.0-alpha2'
+}
+
+publish {
+    userOrg = 'liliangzdh'//bintray.com用户名
+    groupId = 'com.talkfun.cloudlive'//jcenter上的路径
+    artifactId = 'talkFunLibiry'//项目名称
+    publishVersion = '1.0.0'//版本号
+    desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
+    website = 'https://github.com/liliangzdh/talkFunLibiry'
+
+
 }
