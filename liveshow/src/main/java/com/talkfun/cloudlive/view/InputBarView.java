@@ -143,32 +143,29 @@ public class InputBarView extends LinearLayout implements OnExpressionListener, 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R2.id.send_btn:
-                // if (!canInput && currentItem == 0)  //禁言模式
-                if (!canInput)
-                    return;
-                sendContent = inputEdt.getText().toString().trim();
-                if (!isOpen && ScreenSwitchUtils.getInstance(getContext()).isSensorSwitchLandScreen()) {
-                    switchInputAreaLength(false);
-                }
-                sendMessage(sendContent);
-                break;
-            case R2.id.iv_expression:
-                if (!canInput) //禁言模式
-                    return;
-                if (System.currentTimeMillis() - preDismissTime > 100) {
-                    showOrCloseExpressionPopupWindow();
-                }
-                if (!isOpen && ScreenSwitchUtils.getInstance(getContext()).isSensorSwitchLandScreen()) {
-                    switchInputAreaLength(popupWindow.isShowing());
-                }
-                break;
-            case R2.id.btn_send:
-                if (!canInput) //禁言模式
-                    return;
-                sendFlower();
-                break;
+
+        int id = v.getId();
+        if(id == R.id.send_btn){
+            if (!canInput)
+                return;
+            sendContent = inputEdt.getText().toString().trim();
+            if (!isOpen && ScreenSwitchUtils.getInstance(getContext()).isSensorSwitchLandScreen()) {
+                switchInputAreaLength(false);
+            }
+            sendMessage(sendContent);
+        }else if(id == R.id.iv_expression){
+            if (!canInput) //禁言模式
+                return;
+            if (System.currentTimeMillis() - preDismissTime > 100) {
+                showOrCloseExpressionPopupWindow();
+            }
+            if (!isOpen && ScreenSwitchUtils.getInstance(getContext()).isSensorSwitchLandScreen()) {
+                switchInputAreaLength(popupWindow.isShowing());
+            }
+        }else if(id == R.id.btn_send){
+            if (!canInput) //禁言模式
+                return;
+            sendFlower();
         }
     }
 
