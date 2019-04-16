@@ -111,7 +111,7 @@ publish {
     userOrg = 'liliangzdh'//bintray.com用户名
     groupId = 'com.talkfun.cloudlive'//jcenter上的路径
     artifactId = 'talkFunLibiry'//项目名称
-    publishVersion = '1.0.1'//版本号
+    publishVersion = '1.0.3'//版本号
     desc = 'huan '//描述，不重要
     website = 'https://github.com/liliangzdh/talkFunLibiry'
 

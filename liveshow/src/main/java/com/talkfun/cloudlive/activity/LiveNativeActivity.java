@@ -746,14 +746,18 @@ public class LiveNativeActivity extends BasePlayActivity implements
                 mRollHelper.receiveRollAnnounce(roomInfo.getRollEntity());
             }
         }
-
-        //防盗录设置
-        if(moduleConfigHelper.getModuleEnable(ModuleConfigHelper.KEY_MOD_THEFTPROOF)){
-            if(roomInfo.getUser() != null)
-                startShowWatermark(roomInfo.getUser().getUid());
-            else
-                startShowWatermark(roomInfo.getRoomid());
+        try {
+            //防盗录设置
+            if(moduleConfigHelper != null && moduleConfigHelper.getModuleEnable(ModuleConfigHelper.KEY_MOD_THEFTPROOF)){
+                if(roomInfo.getUser() != null)
+                    startShowWatermark(roomInfo.getUser().getUid());
+                else
+                    startShowWatermark(roomInfo.getRoomid());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
     //直播结束

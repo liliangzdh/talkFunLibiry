@@ -261,12 +261,17 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
      * 全屏和非全屏切换
      */
     public void onFullScreenChange() {
-        ScreenSwitchUtils.getInstance(this).setIsFullScreen(!ScreenSwitchUtils.getInstance(this).isFullScreen());
 
-        if (ScreenSwitchUtils.getInstance(this).isSensorSwitchLandScreen()) {  //重力切换的横屏的话
-            updateLayout();
-        } else {
-            ScreenSwitchUtils.getInstance(this).toggleScreen();
+        try {
+            ScreenSwitchUtils.getInstance(this).setIsFullScreen(!ScreenSwitchUtils.getInstance(this).isFullScreen());
+
+            if (ScreenSwitchUtils.getInstance(this).isSensorSwitchLandScreen()) {  //重力切换的横屏的话
+                updateLayout();
+            } else {
+                ScreenSwitchUtils.getInstance(this).toggleScreen();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

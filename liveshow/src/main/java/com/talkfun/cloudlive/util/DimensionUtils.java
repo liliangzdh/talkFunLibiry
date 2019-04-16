@@ -101,8 +101,12 @@ public class DimensionUtils {
      * @return 平板返回 True，手机返回 False
      */
     public static boolean isPad(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+        try {
+            return (context.getResources().getConfiguration().screenLayout
+                    & Configuration.SCREENLAYOUT_SIZE_MASK)
+                    >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+        }catch (Exception e){
+            return false;
+        }
     }
 }
