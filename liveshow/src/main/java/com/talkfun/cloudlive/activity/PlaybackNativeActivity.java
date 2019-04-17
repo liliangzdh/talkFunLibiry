@@ -418,7 +418,6 @@ public class PlaybackNativeActivity extends BasePlayActivity implements
             // playSpeedlpw.setAnchorView(null);
             playSpeedlpw = null;
             autoDismissTitleBar();
-            return;
         }
         super.onConfigurationChanged(newConfig);
     }

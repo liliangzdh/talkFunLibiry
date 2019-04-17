@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -270,7 +271,7 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
             } else {
                 ScreenSwitchUtils.getInstance(this).toggleScreen();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -291,7 +292,7 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
     }
 
     public void layoutChanged() {
-        if(isShowWatermark){
+        if (isShowWatermark) {
             handler.removeCallbacks(watermarkRandomPositionRun);
             handler.post(watermarkRandomPositionRun);
         }
@@ -492,19 +493,28 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
 
 
     protected void registerNetWorkStateReceiver() {
-        if (netWorkStateReceiver == null) {
-            netWorkStateReceiver = new NetWorkStateReceiver();
+        try {
+            if (netWorkStateReceiver == null) {
+                netWorkStateReceiver = new NetWorkStateReceiver();
+            }
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            LocalBroadcastManager.getInstance(this).registerReceiver(netWorkStateReceiver, intentFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        this.registerReceiver(netWorkStateReceiver, intentFilter);
     }
 
     protected void unRegisterNetWorkStateReceiver() {
-        if (netWorkStateReceiver == null)
-            return;
-        this.unregisterReceiver(netWorkStateReceiver);
+        try {
+            if (netWorkStateReceiver != null) {
+                LocalBroadcastManager.getInstance(this).unregisterReceiver(netWorkStateReceiver);
+                netWorkStateReceiver = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -519,17 +529,19 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
         }
     }
 
-    protected  boolean isShowWatermark = false;
+    protected boolean isShowWatermark = false;
+
     /**
      * 显示防盗录水印
+     *
      * @param makeStr
      */
-    protected void startShowWatermark(String makeStr){
+    protected void startShowWatermark(String makeStr) {
         ensureWatermak();
         tvWatermak.setText(makeStr);
-        if(tvWatermak.getParent() == null){
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-            pptLayout.addView(tvWatermak,layoutParams);
+        if (tvWatermak.getParent() == null) {
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            pptLayout.addView(tvWatermak, layoutParams);
         }
         isShowWatermark = true;
         handler.removeCallbacks(watermarkRandomPositionRun);
@@ -539,20 +551,20 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
     /**
      * 停止显示防盗录水
      */
-    protected void stopShowWatermark(){
+    protected void stopShowWatermark() {
         isShowWatermark = false;
         handler.removeCallbacks(watermarkRandomPositionRun);
-        if(tvWatermak == null || tvWatermak.getParent() == null)
+        if (tvWatermak == null || tvWatermak.getParent() == null)
             return;
-        ((ViewGroup)tvWatermak.getParent()).removeView(tvWatermak);
+        ((ViewGroup) tvWatermak.getParent()).removeView(tvWatermak);
     }
 
-    private void ensureWatermak(){
-        if(tvWatermak == null){
+    private void ensureWatermak() {
+        if (tvWatermak == null) {
             tvWatermak = new TextView(this);
             tvWatermak.setTextColor(Color.parseColor("#66ffffff"));
             //tvWatermak.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            tvWatermak.setShadowLayer(10,0,0,Color.parseColor("#000000"));
+            tvWatermak.setShadowLayer(10, 0, 0, Color.parseColor("#000000"));
             //tvWatermak.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,12,getResources().getDisplayMetrics()));
         }
     }
@@ -562,16 +574,16 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
         public void run() {
 
             //LiveNativeActivity.this.getWindowManager().getDefaultDisplay().getSize(sizePoint);
-            ViewGroup parent = (ViewGroup)tvWatermak.getParent();
-            if(parent == null){
+            ViewGroup parent = (ViewGroup) tvWatermak.getParent();
+            if (parent == null) {
                 return;
             }
-            float x = (float)(Math.random() *  (parent.getWidth() - tvWatermak.getWidth()));
-            float y = (float)(Math.random() * (parent.getHeight() - tvWatermak.getHeight()));
+            float x = (float) (Math.random() * (parent.getWidth() - tvWatermak.getWidth()));
+            float y = (float) (Math.random() * (parent.getHeight() - tvWatermak.getHeight()));
             tvWatermak.setX(x);
             tvWatermak.setY(y);
 
-            int delay = 6000 + (int)(Math.random() * 12000);
+            int delay = 6000 + (int) (Math.random() * 12000);
             handler.postDelayed(this, delay);
         }
     };
