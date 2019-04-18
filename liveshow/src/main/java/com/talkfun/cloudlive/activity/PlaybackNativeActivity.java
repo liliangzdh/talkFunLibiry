@@ -380,11 +380,17 @@ public class PlaybackNativeActivity extends BasePlayActivity implements
             playSpeedlpw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    tvSpeed.setText(playSpeedStrs[position]);
-                    mHtSdk.setPlaybackPlaySpeed(playSpeeds[position]);
-                    playSpeedlpw.dismiss();
-                    playSpeedlpw = null;
-                    autoDismissTitleBar();
+                    try {
+                        tvSpeed.setText(playSpeedStrs[position]);
+                        mHtSdk.setPlaybackPlaySpeed(playSpeeds[position]);
+                        if(playSpeedlpw != null){
+                            playSpeedlpw.dismiss();
+                        }
+                        playSpeedlpw = null;
+                        autoDismissTitleBar();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             });
             playSpeedlpw.setOnDismissListener(new PopupWindow.OnDismissListener() {

@@ -172,7 +172,7 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
     /**
      * 返回
      *
-     * @return
+     *
      */
     public void gobackAction() {
            /*if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -499,7 +499,7 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
             }
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            LocalBroadcastManager.getInstance(this).registerReceiver(netWorkStateReceiver, intentFilter);
+            registerReceiver(netWorkStateReceiver, intentFilter);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -508,7 +508,7 @@ public abstract class BasePlayActivity extends BaseActivity implements View.OnTo
     protected void unRegisterNetWorkStateReceiver() {
         try {
             if (netWorkStateReceiver != null) {
-                LocalBroadcastManager.getInstance(this).unregisterReceiver(netWorkStateReceiver);
+                unregisterReceiver(netWorkStateReceiver);
                 netWorkStateReceiver = null;
             }
         } catch (Exception e) {
